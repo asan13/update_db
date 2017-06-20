@@ -32,13 +32,13 @@ class CreateCmd {
 
     this()
     {
-        opts = Config.getCommandOpts!(CreateCmd.Opts);
-        this(opts);
+        auto o = Config.getCommandOpts!(CreateCmd.Opts);
+        this(o);
     }
 
     this(Opts opts)
     {
-        enforce(name.length, new Exception("name required"));
+        enforce(opts.name.length, new Exception("name required"));
 
         this.opts = opts;
 
@@ -83,7 +83,8 @@ class CreateCmd {
         foreach (ref fn; files)
         {
             fn = buildPath(subDir, fn);
-            File(fn, "w");
+            auto fh = File(fn, "w");
+            fh.write("BEGIN;\n\n\nCOMMIT;");
         }
 
         migDir = subDir;

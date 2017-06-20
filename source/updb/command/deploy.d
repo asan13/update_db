@@ -24,13 +24,13 @@ class DeployCmd {
 
     this() 
     {
-        auto opts = Config.getCommandOpts!(DeployCmd.Opts);
-        this(opts);
+        auto o = Config.getCommandOpts!(DeployCmd.Opts);
+        this(o);
     }
 
     this(Opts opts) {
-        this.name = name;
-        this.tag  = tag;
+        this.name = opts.name;
+        this.tag  = opts.tag;
         this.opts = opts;
     }
 
@@ -100,7 +100,8 @@ class DeployCmd {
             }
             else
             {
-                forCommit ~= Migration(mname, mname, dir);
+                string mtag = tag ? tag : mname;
+                forCommit ~= Migration(mname, tag, dir);
             }
         }
 
